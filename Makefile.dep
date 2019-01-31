@@ -1,0 +1,24 @@
+boot.o: boot.S multiboot.h x86_desc.h types.h
+kb_linkage.o: kb_linkage.S
+paging-linkage.o: paging-linkage.S
+rtc_linkage.o: rtc_linkage.S
+system_call_linkage.o: system_call_linkage.S
+x86_desc.o: x86_desc.S x86_desc.h types.h
+exception.o: exception.c exception.h lib.h types.h
+file_helper.o: file_helper.c file_helper.h types.h lib.h terminal.h \
+  syscall.h
+i8259.o: i8259.c i8259.h types.h lib.h
+idt.o: idt.c idt.h types.h x86_desc.h exception.h keyboard.h i8259.h \
+  terminal.h rtc.h lib.h
+kernel.o: kernel.c multiboot.h types.h x86_desc.h lib.h i8259.h debug.h \
+  rtc.h keyboard.h terminal.h exception.h idt.h paging.h file_helper.h \
+  syscall.h
+keyboard.o: keyboard.c keyboard.h types.h i8259.h terminal.h lib.h \
+  syscall.h file_helper.h x86_desc.h
+lib.o: lib.c lib.h types.h
+paging.o: paging.c paging.h types.h lib.h
+rtc.o: rtc.c rtc.h types.h i8259.h lib.h
+syscall.o: syscall.c syscall.h file_helper.h types.h lib.h rtc.h i8259.h \
+  terminal.h x86_desc.h paging.h keyboard.h
+terminal.o: terminal.c terminal.h types.h keyboard.h i8259.h lib.h \
+  paging.h syscall.h file_helper.h

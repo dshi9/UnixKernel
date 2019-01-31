@@ -1,0 +1,47 @@
+Checkpoint 1:
+
+IDT does not work with correct setting up exception and intterrupt data structure. 
+-FIX: load the IDT address wrongly into idtr, change to correct parameter idt_desc_ptr.
+
+Keyboard can only interrupt once, after mapping to the correct port in idt. 
+-FIX: add assembly wrapper to the keyboard handler function
+
+RTC only interrupt once after rtc handler is called. 
+-FIX: force to clear the rtc data port.
+
+Checkpoint 2:
+
+Cursor did not at correct position after ENTER (newline_cursor) has been pressed. 
+-FIX: decrement terminal's x position at the begining of the function.
+
+When the cursor reaching the bottom row of terminal, the terminal update the screen wrongly. 
+-FIX: change the boundary check of the cursor's position
+
+After pressing CTRL, press l solely will automatically clear the screen.
+-FIX: Make CTRL flag back to 0 after clearing the screen each time.
+
+Checkpoint 3:
+
+ESP,EBP are wrongly stored and restored. 
+-FIX: change the process ID number with correct value. PCB should store parent ESP&EBP. 
+
+Stdin for shell does not work properly. Shell always wait for input even after we press enter.  
+-FIX: Instead of only one line_buffer for input before enter, we implement another terminal_buffer which will be set whenever we press enter.
+
+Checkpoint 4:
+The execute function can not get argument correctly. 
+-FIX: does not put 0x20 ASCII (' ') character in the scancode lookup table.
+
+The argument is not place in the correct position in the buffer. 
+-FIX: modify the argument offset by plus 1
+
+Pingpong stopped after printing single “A” ­
+-FIX:RTC did not sti and cli in Rtc_read. Add sti and cli in rtc_read.
+
+Global varible seems to be changed during exexcution. For example, while executing file fish, the first element uint8_t* fname = "frame0.txt" is always null. At the begginning, it is really hard to debug it since gdb give nothing but that variable is wrong. However, there is a paradox since file of fish stored in file system could not be wrong. 
+-FIX: We finally found the bug is located in file_read, which behave wrongly while reaching boundary.
+
+Checkpoint 5:
+
+After switch the terminal, the keyboard interrupt is disabled. 
+-FIX: forget to send eoi after executing a new "shell"
